@@ -169,6 +169,8 @@
             .hero-right { display: none; }
             .hero-content-wrapper { flex-direction: column; gap: 20px; }
             nav { padding: 20px 5%; }
+            .nav-links { display: none; }
+            .veille-grid { grid-template-columns: 1fr !important; }
         }
     </style>
 </head>
@@ -180,6 +182,7 @@
             <a href="#experiences">Parcours</a>
             <a href="#skills">Skills</a>
             <a href="#projets">Projets</a>
+            <a href="#veille">Veille</a>
             <a href="#contact">Contact</a>
         </div>
     </nav>
@@ -223,7 +226,7 @@
                         <p>   ├─ 📁 Windows_Server_2022 (ADDS, DNS, DHCP)</p>
                         <p>   ├─ 📁 TrueNAS_Storage_Pool</p>
                         <p>   ├─ 🛡️ pfSense_Firewall_ACL</p>
-                        <p>   └─ 🐧 Linux_Debian_SysAdmin</p>
+                        <p>   └─ 🐧 Linux_SysAdmin (GLPI_on_Ubuntu)</p>
                         <br>
                         <p><span class="prompt">$</span> <span class="typing-cursor"></span></p>
                     </div>
@@ -237,7 +240,7 @@
         
         <div class="timeline-item" data-aos="fade-left">
             <div class="date">2025/2026 - ALTERNANCE</div>
-            <h3 style="font-size: 1.5rem;">Senfas (Méjannes-lès-Alès)</h3>
+            <h3 style="font-size: 1.5rem;">Senfas (Alès)</h3>
             <p style="margin-top: 10px; color: #94a3b8;">Technicien Systèmes & Réseaux. Gestion du support utilisateur (N1/N2), déploiement et maintien en conditions opérationnelles de l'infrastructure de l'entreprise. Administration active du parc informatique.</p>
             <div style="margin-top: 15px;">
                 <span class="tag">Support IT</span><span class="tag">Réseau</span><span class="tag">Gestion de parc</span>
@@ -291,6 +294,57 @@
         </div>
     </section>
 
+    <section id="veille">
+        <h2 class="section-title" data-aos="fade-up">Veille <span>Technologique</span></h2>
+        
+        <div class="veille-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 50px;">
+            <div class="card" data-aos="fade-right" style="padding: 30px;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--light);"><i class="fas fa-radar" style="color: var(--primary); margin-right: 10px;"></i> Thèmes de Veille</h3>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Surveillance active de l'écosystème IT et des menaces émergentes :</p>
+                <div>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Cybersécurité & Active Directory</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Évolutions Windows Server</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Vulnérabilités Réseaux (Pare-feu)</span>
+                </div>
+            </div>
+            
+            <div class="card" data-aos="fade-left" style="padding: 30px;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--light);"><i class="fas fa-tools" style="color: var(--primary); margin-right: 10px;"></i> Outils & Sources</h3>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Méthodologie de collecte et sources d'informations fiables :</p>
+                <div>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">ANSSI (CERT-FR)</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Zataz (Actualités FR)</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">The Hacker News</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1.6rem; margin-bottom: 30px; font-weight: 800;" data-aos="fade-up">Dernières <span>Analyses</span></h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="card" data-aos="fade-up" data-aos-delay="0" style="padding: 30px;">
+                <div style="color: var(--primary); font-family: 'Consolas', monospace; font-size: 0.8rem; margin-bottom: 15px;">CERT-FR • Alerte de Sécurité</div>
+                <h4 style="font-size: 1.2rem; margin-bottom: 15px; line-height: 1.4;">Vulnérabilité dans Microsoft Active Directory (CERTFR-2023-AVI-0547)</h4>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">Alerte sur une faille critique touchant Windows Server 2022 et l'Active Directory Federation Service. Cette vulnérabilité permet le contournement des politiques de sécurité. Mise en lumière de l'importance cruciale de l'application rapide des correctifs Microsoft (KB).</p>
+                <a href="https://www.cert.ssi.gouv.fr/avis/CERTFR-2023-AVI-0547" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-external-link-alt"></i> Lire l'alerte</a>
+            </div>
+            
+            <div class="card" data-aos="fade-up" data-aos-delay="100" style="padding: 30px;">
+                <div style="color: var(--primary); font-family: 'Consolas', monospace; font-size: 0.8rem; margin-bottom: 15px;">The Hacker News • Expert Insights</div>
+                <h4 style="font-size: 1.2rem; margin-bottom: 15px; line-height: 1.4;">L'Identité (AD) comme nouveau pare-feu contre les malwares</h4>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">Analyse expliquant pourquoi les pare-feux classiques ne suffisent plus. Les attaquants utilisent des identifiants volés pour s'infiltrer. La sécurisation de l'Active Directory et la détection d'anomalies de connexion deviennent le rempart principal contre le déploiement de ransomwares.</p>
+                <a href="https://thehackernews.com/expert-insights/2025/09/how-to-build-identity-firewall-with.html" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-external-link-alt"></i> Lire l'analyse</a>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="200" style="padding: 30px;">
+                <div style="color: var(--primary); font-family: 'Consolas', monospace; font-size: 0.8rem; margin-bottom: 15px;">Zataz • Damien Bancal</div>
+                <h4 style="font-size: 1.2rem; margin-bottom: 15px; line-height: 1.4;">Les cartels de ransomwares ciblent les failles de périmètre (VPN/Firewall)</h4>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">Suivi de l'actualité des cyberattaques en France. Les groupes de pirates exploitent massivement des vulnérabilités sur des équipements réseaux (pare-feux, VPN) non mis à jour pour s'introduire dans les réseaux d'entreprises et compromettre les NAS de sauvegarde et les serveurs AD.</p>
+                <a href="https://www.zataz.com/" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-external-link-alt"></i> Suivre Zataz</a>
+            </div>
+        </div>
+    </section>
+
     <section id="contact">
         <h2 class="section-title" data-aos="fade-up">Contact <span>& Infos</span></h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
@@ -298,6 +352,7 @@
                 <h3 style="margin-bottom: 20px; color: var(--primary);">Coordonnées</h3>
                 <p style="margin-bottom: 10px;"><strong>Email :</strong> royguillian@gmail.com</p>
                 <p style="margin-bottom: 10px;"><strong>Téléphone :</strong> 06 84 94 57 67</p>
+                <p style="margin-bottom: 10px;"><strong>Adresse :</strong> 406 route de Nîmes, 30100 Alès</p>
                 <p><strong>Mobilité :</strong> Permis B (Véhiculé)</p>
             </div>
             <div class="card" data-aos="fade-up" data-aos-delay="100">
@@ -318,4 +373,4 @@
         AOS.init({ duration: 800, once: true });
     </script>
 </body>
-</html>
+</html>d
