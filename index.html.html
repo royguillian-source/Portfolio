@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guillian Roy | Portfolio SISR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --dark: #020617;
+            --light: #f8fafc;
+            --slate: #0f172a;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        /* FOND : MATRICE DE POINTS & LUEURS FIXES */
+        body { 
+            background-color: var(--dark); 
+            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            background-attachment: fixed;
+            color: var(--light); 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6; 
+            position: relative;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 70vw;
+            height: 70vw;
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(120px);
+        }
+        body::before {
+            top: -25vw;
+            left: -25vw;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.07) 0%, transparent 60%);
+        }
+        body::after {
+            bottom: -25vw;
+            right: -25vw;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, transparent 60%);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 25px 10%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+        .nav-links a { color: var(--light); text-decoration: none; margin-left: 30px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* --- ACCUEIL (HERO) --- */
+        .hero {
+            height: 100vh; display: flex; align-items: center;
+            padding: 0 10%; position: relative;
+        }
+        .hero-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 40px;
+        }
+        .hero-left { flex: 1.2; }
+        .hero-right { flex: 0.8; display: flex; justify-content: flex-end; }
+
+        .hero-label {
+            color: var(--primary);
+            font-weight: 800;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-content-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            margin-bottom: 25px;
+        }
+
+        .hero-photo {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--border);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+            transition: 0.3s;
+        }
+
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; letter-spacing: -3px; line-height: 0.9; }
+        .hero h1 .name-color { 
+            background: linear-gradient(to bottom right, #fff 40%, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle { margin-bottom: 40px; }
+        .hero-subtitle h2 { font-size: 1.8rem; margin-bottom: 5px; color: var(--light); letter-spacing: -0.5px; font-weight: 800; }
+        .hero-subtitle p { font-size: 1.2rem; color: var(--primary); font-weight: 600; }
+
+        /* TERMINAL WINDOW */
+        .terminal-window {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+        .terminal-header {
+            background: rgba(2, 6, 23, 0.9);
+            padding: 12px 15px;
+            display: flex; align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .terminal-header .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+        .terminal-header .close { background: #ff5f56; }
+        .terminal-header .minimize { background: #ffbd2e; }
+        .terminal-header .maximize { background: #27c93f; }
+        .terminal-title { flex: 1; text-align: center; color: #94a3b8; font-size: 0.75rem; margin-left: -40px; }
+        .terminal-body { padding: 20px; color: #cbd5e1; text-align: left; }
+        .terminal-body p { margin-bottom: 4px; }
+        .prompt { color: #27c93f; font-weight: bold; margin-right: 8px; }
+        .typing-cursor { display: inline-block; width: 8px; height: 15px; background: #cbd5e1; animation: blink 1s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* --- SECTIONS --- */
+        section { padding: 120px 10%; }
+        .section-title { font-size: 2.8rem; margin-bottom: 60px; font-weight: 900; letter-spacing: -1.5px; }
+        .section-title span { color: var(--primary); }
+
+        .card { 
+            background: rgba(15, 23, 42, 0.75); 
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border); 
+            padding: 40px; border-radius: 24px; transition: 0.3s; 
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        
+        .timeline-item { border-left: 2px solid var(--primary); padding-left: 35px; margin-bottom: 50px; position: relative; }
+        .timeline-item::after { content: ''; position: absolute; left: -10px; top: 6px; width: 18px; height: 18px; background: var(--primary); border: 4px solid var(--dark); border-radius: 50%; }
+        .date { color: var(--primary); font-weight: 800; font-size: 0.9rem; margin-bottom: 8px; }
+
+        .tag { background: rgba(59, 130, 246, 0.1); color: var(--primary); padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; margin-right: 10px; margin-bottom: 10px; display: inline-block; border: 1px solid rgba(59, 130, 246, 0.2); }
+
+        footer { padding: 50px 10%; border-top: 1px solid var(--border); text-align: center; font-size: 0.85rem; color: #475569; background: rgba(2, 6, 23, 0.9); }
+
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .hero-container { flex-direction: column; text-align: center; justify-content: center; }
+            .hero-right { display: none; }
+            .hero-content-wrapper { flex-direction: column; gap: 20px; }
+            nav { padding: 20px 5%; }
+            .nav-links { display: none; }
+            .veille-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight: 900; letter-spacing: -1px; font-size: 1.2rem;">G.ROY</div>
+        <div class="nav-links">
+            <a href="#experiences">Parcours</a>
+            <a href="#skills">Skills</a>
+            <a href="#projets">Projets</a>
+            <a href="#synthese">Synthèse E5</a>
+            <a href="#veille">Veille</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-left">
+                <div class="hero-label" data-aos="fade-down">Portfolio Infrastructure</div>
+                
+                <div class="hero-content-wrapper" data-aos="fade-right">
+                    <img src="profil.png" alt="Photo de Guillian Roy" class="hero-photo">
+                    <h1>GUILLIAN<br><span class="name-color">ROY</span></h1>
+                </div>
+                
+                <div class="hero-subtitle" data-aos="fade-right" data-aos-delay="100">
+                    <h2>Étudiant en 1ère année de BTS SIO</h2>
+                    <p>Alternant dans l'entreprise Senfas</p>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <a href="#projets" style="background: var(--primary); color: white; padding: 18px 45px; border-radius: 12px; text-decoration: none; font-weight: 800; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); transition: 0.3s; display: inline-block; margin-right: 15px;">MON PROJET</a>
+                    <a href="#contact" style="color: white; padding: 18px 45px; border-radius: 12px; text-decoration: none; font-weight: 800; border: 1px solid var(--border); transition: 0.3s; display: inline-block; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(10px);">CONTACT</a>
+                </div>
+            </div>
+
+            <div class="hero-right" data-aos="zoom-in" data-aos-delay="300">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <span class="dot close"></span>
+                        <span class="dot minimize"></span>
+                        <span class="dot maximize"></span>
+                        <div class="terminal-title">admin@groy-server:~</div>
+                    </div>
+                    <div class="terminal-body">
+                        <p><span class="prompt">$</span> systemctl status infra-skills</p>
+                        <p style="color: #f8fafc; font-weight: bold;">● infra-skills.service - Core IT Competencies</p>
+                        <p>   Active: <span style="color: #27c93f;">active (running)</span> since May 2026</p>
+                        <p>   Main PID: 2026 (guillian)</p>
+                        <br>
+                        <p>   CGroup: /system.slice/infra-skills.service</p>
+                        <p>   ├─ 📁 Windows_Server_2022 (ADDS, DNS, DHCP)</p>
+                        <p>   ├─ 📁 TrueNAS_Storage_Pool</p>
+                        <p>   ├─ 🛡️ pfSense_Firewall_ACL</p>
+                        <p>   └─ 🐧 Linux_SysAdmin (GLPI_on_Ubuntu)</p>
+                        <br>
+                        <p><span class="prompt">$</span> <span class="typing-cursor"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="experiences">
+        <h2 class="section-title" data-aos="fade-up">Expériences <span>Professionnelles</span></h2>
+        
+        <div class="timeline-item" data-aos="fade-left">
+            <div class="date">2025/2026 - ALTERNANCE</div>
+            <h3 style="font-size: 1.5rem;">Senfas (Alès)</h3>
+            <p style="margin-top: 10px; color: #94a3b8;">Technicien Systèmes & Réseaux. Gestion du support utilisateur (N1/N2), déploiement et maintien en conditions opérationnelles de l'infrastructure de l'entreprise. Administration active du parc informatique.</p>
+            <div style="margin-top: 15px;">
+                <span class="tag">Support IT</span><span class="tag">Réseau</span><span class="tag">Gestion de parc</span>
+            </div>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-left">
+            <div class="date">2024/2025 - STAGE (6 SEMAINES)</div>
+            <h3 style="font-size: 1.5rem;">Harmony-Group (Alès)</h3>
+            <p style="margin-top: 10px; color: #94a3b8;">Modification d'un ERP. Utilisation de l'Active Directory pour diverses tâches d'administration. Inventaire complet des lignes téléphoniques et gestion du stockage informatique.</p>
+        </div>
+
+        <div class="timeline-item" data-aos="fade-left">
+            <div class="date">2023/2024 - STAGE (8 SEMAINES)</div>
+            <h3 style="font-size: 1.5rem;">Solène R (Alès)</h3>
+            <p style="margin-top: 10px; color: #94a3b8;">Programmation d'un automate Schneider. Création d'une étude thermique pour un établissement scolaire et relevé des données de générateurs.</p>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2 class="section-title" data-aos="fade-up">Compétences <span>Techniques</span></h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="card" data-aos="zoom-in">
+                <h3 style="font-size: 1.2rem;"><i class="fa-brands fa-windows" style="color: var(--primary); margin-right: 10px;"></i> Écosystème Microsoft</h3>
+                <p style="margin-top: 15px; color: #94a3b8;">Déploiement de <strong>Windows Server 2022</strong>. Gestion Active Directory, DNS, DHCP et application des <strong>GPO</strong>.</p>
+            </div>
+            <div class="card" data-aos="zoom-in" data-aos-delay="100">
+                <h3 style="font-size: 1.2rem;"><i class="fa-brands fa-linux" style="color: var(--primary); margin-right: 10px;"></i> Linux & ITSM</h3>
+                <p style="margin-top: 15px; color: #94a3b8;">Administration système via <strong>Debian</strong> et <strong>Ubuntu</strong>. Gestion de l'assistance via <strong>GLPI</strong> sur Ubuntu.</p>
+            </div>
+            <div class="card" data-aos="zoom-in" data-aos-delay="200">
+                <h3 style="font-size: 1.2rem;"><i class="fa-solid fa-network-wired" style="color: var(--primary); margin-right: 10px;"></i> Réseau & Sécurité</h3>
+                <p style="margin-top: 15px; color: #94a3b8;">Pare-feu <strong>pfSense</strong>, listes de contrôle d'accès (<strong>ACL</strong>) et maquettage sous <strong>Cisco Packet Tracer</strong>.</p>
+            </div>
+            <div class="card" data-aos="zoom-in" data-aos-delay="300">
+                <h3 style="font-size: 1.2rem;"><i class="fa-solid fa-server" style="color: var(--primary); margin-right: 10px;"></i> Virtualisation & NAS</h3>
+                <p style="margin-top: 15px; color: #94a3b8;">Utilisation de <strong>VMware Workstation</strong>. Gestion centralisée et sécurisée du stockage via <strong>TrueNAS</strong>.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projets">
+        <h2 class="section-title" data-aos="fade-up">Projet <span>d'Étude</span></h2>
+        <div class="card" data-aos="fade-up" style="border-color: var(--primary); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; right: 0; background: var(--primary); color: white; padding: 8px 20px; font-weight: 800; font-size: 0.8rem; border-bottom-left-radius: 16px;">PROJET E6</div>
+            <h3 style="font-size: 1.8rem; margin-bottom: 15px; margin-top: 20px;">Infrastructure Complète (BTS SIO SISR)</h3>
+            <p style="color: #94a3b8; font-size: 1.1rem; max-width: 800px; margin-bottom: 25px;">Conception et déploiement d'une infrastructure virtualisée intégrant un domaine Windows Server 2022, un stockage centralisé <strong>TrueNAS</strong> et une sécurisation pfSense avec filtrage par <strong>ACL</strong>.</p>
+            <div style="margin-bottom: 35px;">
+                <span class="tag">Windows Server 2022</span><span class="tag">Active Directory</span><span class="tag">pfSense</span><span class="tag">TrueNAS</span><span class="tag">ACL</span>
+            </div>
+            
+            <h4 style="font-size: 1.1rem; margin-bottom: 15px; color: var(--light); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">Livrables du projet :</h4>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="Doc_Technique.pdf" target="_blank" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(59, 130, 246, 0.5); color: var(--light); padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-file-pdf" style="color: #ff5f56; font-size: 1.2rem;"></i> Doc. Technique
+                </a>
+                <a href="Doc_Utilisateur.pdf" target="_blank" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(59, 130, 246, 0.5); color: var(--light); padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-file-pdf" style="color: #ffbd2e; font-size: 1.2rem;"></i> Doc. Utilisateur
+                </a>
+                <a href="Rapport_Test.pdf" target="_blank" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(59, 130, 246, 0.5); color: var(--light); padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-file-pdf" style="color: #27c93f; font-size: 1.2rem;"></i> Rapport de Test
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="synthese">
+        <h2 class="section-title" data-aos="fade-up">Tableau de <span>Synthèse E5</span></h2>
+        <div class="card" data-aos="zoom-in" style="text-align: center;">
+            <h3 style="font-size: 1.8rem; margin-bottom: 15px;">Consulter mon tableau de synthèse E5</h3>
+            <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 25px;">Retrouvez ici le détail de mes activités et compétences validées pour l'épreuve E5.</p>
+            <a href="Synthese_E5.pdf" target="_blank" style="background: var(--primary); color: white; padding: 15px 30px; border-radius: 10px; text-decoration: none; font-weight: 800; display: inline-block;">
+                <i class="fa-solid fa-download" style="margin-right: 10px;"></i> Télécharger le PDF
+            </a>
+        </div>
+    </section>
+
+    <section id="veille">
+        <h2 class="section-title" data-aos="fade-up">Veille <span>Technologique</span></h2>
+        
+        <div class="veille-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 50px;">
+            <div class="card" data-aos="fade-right" style="padding: 30px;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--light);"><i class="fas fa-radar" style="color: var(--primary); margin-right: 10px;"></i> Thèmes de Veille</h3>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Surveillance active de l'écosystème IT et des menaces émergentes :</p>
+                <div>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Cybersécurité & Active Directory</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Évolutions Windows Server</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Vulnérabilités Réseaux (Pare-feu)</span>
+                </div>
+            </div>
+            
+            <div class="card" data-aos="fade-left" style="padding: 30px;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: var(--light);"><i class="fas fa-tools" style="color: var(--primary); margin-right: 10px;"></i> Outils & Sources</h3>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Méthodologie de collecte et sources d'informations fiables :</p>
+                <div>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">ANSSI (CERT-FR)</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">Zataz (Actualités FR)</span>
+                    <span class="tag" style="border: none; background: rgba(255,255,255,0.05);">The Hacker News</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1.6rem; margin-bottom: 30px; font-weight: 800;" data-aos="fade-up">Dernières <span>Analyses</span></h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="card" data-aos="fade-up" data-aos-delay="0" style="padding: 30px;">
+                <div style="color: var(--primary); font-family: 'Consolas', monospace; font-size: 0.8rem; margin-bottom: 15px;">Juin 2026 • CERT-FR • Alerte de Sécurité</div>
+                <h4 style="font-size: 1.2rem; margin-bottom: 15px; line-height: 1.4;">Vulnérabilités critiques sur les accès distants (VPN)</h4>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">L'ANSSI rappelle l'exploitation massive de failles sur des équipements de bordure (routeurs et VPN d'entreprise). L'article souligne de manière très claire pourquoi l'application immédiate des correctifs (patchs) est la règle d'or pour bloquer les intrusions initiales.</p>
+                <a href="https://www.cert.ssi.gouv.fr/" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-external-link-alt"></i> Consulter le CERT-FR</a>
+            </div>
+            
+            <div class="card" data-aos="fade-up" data-aos-delay="100" style="padding: 30px;">
+                <div style="color: var(--primary); font-family: 'Consolas', monospace; font-size: 0.8rem; margin-bottom: 15px;">Mai 2026 • The Hacker News • Expert Insights</div>
+                <h4 style="font-size: 1.2rem; margin-bottom: 15px; line-height: 1.4;">L'Intelligence Artificielle au service du Phishing</h4>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">Une analyse expliquant comment les pirates utilisent l'IA générative pour rédiger des emails frauduleux parfaits, sans fautes d'orthographe. Face à ces attaques sophistiquées, la sensibilisation constante des employés devient tout aussi importante que les filtres anti-spam techniques.</p>
+                <a href="https://thehackernews.com/" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-external-link-alt"></i> Lire l'analyse</a>
+            </div>
+
+            <div class="card" data-aos="fade-up" data-aos-delay="200" style="padding: 30px;">
+                <div style="color: var(--primary); font-family: 'Consolas', monospace; font-size: 0.8rem; margin-bottom: 15px;">Avril 2026 • Zataz • Actualités Cyber</div>
+                <h4 style="font-size: 1.2rem; margin-bottom: 15px; line-height: 1.4;">Ransomwares : les sauvegardes "hors ligne" indispensables</h4>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">Suite aux récentes attaques ciblant les hôpitaux et mairies en France, Zataz met en évidence que les pirates cherchent désormais à détruire les sauvegardes sur le réseau avant de chiffrer. L'article prouve l'importance absolue de conserver des sauvegardes déconnectées (règle du 3-2-1).</p>
+                <a href="https://www.zataz.com/" target="_blank" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: bold;"><i class="fas fa-external-link-alt"></i> Suivre Zataz</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title" data-aos="fade-up">Contact <span>& Infos</span></h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div class="card" data-aos="fade-up">
+                <h3 style="margin-bottom: 20px; color: var(--primary);">Coordonnées</h3>
+                <p style="margin-bottom: 10px;"><strong>Email :</strong> royguillian@gmail.com</p>
+                <p style="margin-bottom: 10px;"><strong>Téléphone :</strong> 06 84 94 57 67</p>
+                <p style="margin-bottom: 10px;"><strong>Adresse :</strong> 406 route de Nîmes, 30100 Alès</p>
+                <p><strong>Mobilité :</strong> Permis B (Véhiculé)</p>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <h3 style="margin-bottom: 20px; color: var(--primary);">Certifications</h3>
+                <p style="margin-bottom: 10px;"><strong>Habilitation :</strong> Électrique B1V/BR</p>
+                <p style="margin-bottom: 10px;"><strong>Sécurité :</strong> Sauveteur secouriste SST</p>
+                <p><strong>Langues :</strong> Anglais niveau B1+</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 GUILLIAN ROY - BTS SIO SISR | Senfas Alès</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+    </script>
+</body>
+</html>
